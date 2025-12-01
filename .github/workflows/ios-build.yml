@@ -49,29 +49,16 @@ jobs:
         pod install
         cd ..
     
-    - name: Build Flutter framework
-      run: flutter build ios-framework --release --no-codesign
-    
-    - name: Build with xcodebuild (no codesign)
+    - name: Build iOS app bundle
       run: |
-        cd ios
-        xcodebuild -workspace Runner.xcworkspace \
-          -scheme Runner \
-          -configuration Release \
-          -sdk iphoneos \
-          -destination generic/platform=iOS \
-          CODE_SIGN_IDENTITY="" \
-          CODE_SIGNING_REQUIRED=NO \
-          CODE_SIGNING_ALLOWED=NO \
-          DEVELOPMENT_TEAM="" \
-          build
-        cd ..
+        flutter build ios --release --no-codesign --no-tree-shake-icons
     
-    - name: Create IPA
+    - name: Create IPA from app bundle
       run: |
         mkdir -p Payload
-        cp -r ios/build/Release-iphoneos/Runner.app Payload/
+        cp -r build/ios/iphoneos/Runner.app Payload/
         zip -r BlackDiamondCar.ipa Payload
+        rm -rf Payload
     
     - name: Upload IPA
       uses: actions/upload-artifact@v4
