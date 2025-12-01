@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../data/data_provider/remote_url.dart';
 import '../../../../data/model/home/home_model.dart';
 import '../../../../logic/cubit/wishlist/wishlist_cubit.dart';
+import '../../../../logic/cubit/compare/compare_list_cubit.dart';
 import '../../../../routes/route_names.dart';
 import '../../../../utils/constraints.dart';
 import '../../../../utils/k_images.dart';
@@ -21,11 +22,13 @@ class PopularCarCard extends StatefulWidget {
 
 class _PopularCarCardState extends State<PopularCarCard> {
   late WishlistCubit wishList;
+  late CompareCubit compareCubit;
 
   @override
   void initState() {
     super.initState();
     wishList = context.read<WishlistCubit>();
+    compareCubit = context.read<CompareCubit>();
   }
 
   bool checkIfFavorite() {
@@ -55,6 +58,18 @@ class _PopularCarCardState extends State<PopularCarCard> {
     
     if (mounted) {
       setState(() {});
+    }
+  }
+
+  void _addToCompare() async {
+    final body = {'car_id': widget.cars.id.toString()};
+    await compareCubit.addCompare(body);
+    await compareCubit.getCompareList();
+    
+    if (mounted) {
+      Utils.successSnackBar(context, 'Added to compare');
+      // Navigate to compare screen
+      Navigator.pushNamed(context, RouteNames.compareScreen);
     }
   }
 
@@ -97,28 +112,54 @@ class _PopularCarCardState extends State<PopularCarCard> {
                 Positioned(
                     right: 10.0,
                     top: 10.0,
-                    child: GestureDetector(
-                      onTap: (){
-                        if (Utils.isLoggedIn(context)) {
-                          toggleFavorite();
-                        } else {
-                          Utils.showSnackBarWithLogin(context);
-                        }
-                      },
-                      child: Container(
-                        padding: Utils.all(value: 8.0),
-                        decoration:const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color(0xFFEEF2F6),
+                    child: Row(
+                      children: [
+                        GestureDetector(
+                          onTap: (){
+                            if (Utils.isLoggedIn(context)) {
+                              _addToCompare();
+                            } else {
+                              Utils.showSnackBarWithLogin(context);
+                            }
+                          },
+                          child: Container(
+                            padding: Utils.all(value: 8.0),
+                            decoration:const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Color(0xFFEEF2F6),
+                            ),
+                            child: const CustomImage(
+                              path: KImages.compare,
+                              height: 17.0,
+                              width: 20.0,
+                            ),
+                          ),
                         ),
-                        child: CustomImage(
-                          path: checkIfFavorite()
-                              ? KImages.loveActiveIcon
-                              : KImages.loveIcon,
-                          height: 17.0,
-                          width: 20.0,
+                        Utils.horizontalSpace(8.0),
+                        GestureDetector(
+                          onTap: (){
+                            if (Utils.isLoggedIn(context)) {
+                              toggleFavorite();
+                            } else {
+                              Utils.showSnackBarWithLogin(context);
+                            }
+                          },
+                          child: Container(
+                            padding: Utils.all(value: 8.0),
+                            decoration:const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Color(0xFFEEF2F6),
+                            ),
+                            child: CustomImage(
+                              path: checkIfFavorite()
+                                  ? KImages.loveActiveIcon
+                                  : KImages.loveIcon,
+                              height: 17.0,
+                              width: 20.0,
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ))
               ],
             ),
