@@ -31,21 +31,21 @@ jobs:
     - name: Enable iOS platform
       run: flutter config --enable-ios
     
+    - name: Clean Flutter
+      run: flutter clean
+    
     - name: Install dependencies
       run: flutter pub get
     
     - name: Verify iOS configuration
       run: |
         ls -la ios/
+        ls -la ios/Flutter/
         cat ios/Runner/Info.plist
-    
-    - name: Clean Flutter
-      run: flutter clean
     
     - name: Install CocoaPods dependencies
       run: |
         cd ios
-        pod repo update
         pod install
         cd ..
     
