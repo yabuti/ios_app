@@ -39,14 +39,18 @@ jobs:
         ls -la ios/
         cat ios/Runner/Info.plist
     
+    - name: Clean Flutter
+      run: flutter clean
+    
     - name: Install CocoaPods dependencies
       run: |
         cd ios
+        pod repo update
         pod install
         cd ..
     
     - name: Build iOS (no codesign)
-      run: flutter build ios --release --no-codesign --verbose
+      run: flutter build ios --release --no-codesign
     
     - name: Create IPA
       run: |
