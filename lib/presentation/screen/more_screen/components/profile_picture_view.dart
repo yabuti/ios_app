@@ -1,14 +1,14 @@
-import 'package:blackdiamondcar/logic/cubit/profile/profile_cubit.dart';
-import 'package:blackdiamondcar/logic/cubit/website_setup/website_setup/website_setup_cubit.dart';
-import 'package:blackdiamondcar/widgets/custom_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../../utils/constraints.dart';
-import '../../../../../utils/utils.dart';
 import '../../../../data/data_provider/remote_url.dart';
 import '../../../../data/model/auth/user_response_model.dart';
+import '../../../../logic/cubit/profile/profile_cubit.dart';
+import '../../../../logic/cubit/website_setup/website_setup/website_setup_cubit.dart';
+import '../../../../utils/constraints.dart';
 import '../../../../utils/k_images.dart';
+import '../../../../utils/utils.dart';
 import '../../../../widgets/circle_image.dart';
+import '../../../../widgets/custom_image.dart';
 
 
 class ProfilePictureView extends StatelessWidget {

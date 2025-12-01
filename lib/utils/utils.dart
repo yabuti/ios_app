@@ -657,43 +657,44 @@ class Utils {
   }
 
 
-  static Color transactionColor(TransactionModel transaction) {
-    switch (transaction.status) {
-      case "active":
-        return const Color(0xFFE5FFF3);
-      case "expired":
-        return const Color(0xFFFFE8E8);
-      case "pending":
-        return  const Color(0xFFF7CB73);
-      default:
-        return transparent;
-    }
-  }
+  // Commented out - TransactionModel not implemented
+  // static Color transactionColor(TransactionModel transaction) {
+  //   switch (transaction.status) {
+  //     case "active":
+  //       return const Color(0xFFE5FFF3);
+  //     case "expired":
+  //       return const Color(0xFFFFE8E8);
+  //     case "pending":
+  //       return  const Color(0xFFF7CB73);
+  //     default:
+  //       return transparent;
+  //   }
+  // }
 
-  static Color transactionTextColor(TransactionModel transaction) {
-    switch (transaction.status) {
-      case "active":
-        return const Color(0xFF00C065);
-      case "expired":
-        return const Color(0xFFEE3536);
-      case "pending":
-        return const Color(0xFFE9FFF9);
-      default:
-        return transparent;
-    }
-  }
+  // static Color transactionTextColor(TransactionModel transaction) {
+  //   switch (transaction.status) {
+  //     case "active":
+  //       return const Color(0xFF00C065);
+  //     case "expired":
+  //       return const Color(0xFFEE3536);
+  //     case "pending":
+  //       return const Color(0xFFE9FFF9);
+  //     default:
+  //       return transparent;
+  //   }
+  // }
 
-  static String transactionText(BuildContext context,TransactionModel transaction) {
-    switch (transaction.status) {
-      case "active":
-        return Utils.translatedText(context, 'Active');
-      case "expired":
-        return Utils.translatedText(context, 'Expired');
-      case "pending":
-        return Utils.translatedText(context, 'Pending');
-      default:
-        return 'Nothing';
-    }
-  }
+  // static String transactionText(BuildContext context,TransactionModel transaction) {
+  //   switch (transaction.status) {
+  //     case "active":
+  //       return Utils.translatedText(context, 'Active');
+  //     case "expired":
+  //       return Utils.translatedText(context, 'Expired');
+  //     case "pending":
+  //       return Utils.translatedText(context, 'Pending');
+  //     default:
+  //       return 'Nothing';
+  //   }
+  // }
 
 }
