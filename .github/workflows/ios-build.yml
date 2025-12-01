@@ -49,19 +49,28 @@ jobs:
         pod install
         cd ..
     
-    - name: Disable code signing
-      run: |
-        sed -i '' 's/CODE_SIGN_IDENTITY = "iPhone Developer"/CODE_SIGN_IDENTITY = ""/g' ios/Runner.xcodeproj/project.pbxproj
-        sed -i '' 's/DEVELOPMENT_TEAM = .*/DEVELOPMENT_TEAM = "";/g' ios/Runner.xcodeproj/project.pbxproj
-        sed -i '' 's/CODE_SIGN_STYLE = Automatic/CODE_SIGN_STYLE = Manual/g' ios/Runner.xcodeproj/project.pbxproj
+    - name: Build Flutter framework
+      run: flutter build ios-framework --release --no-codesign
     
-    - name: Build iOS (no codesign)
-      run: flutter build ios --release --no-codesign
+    - name: Build with xcodebuild (no codesign)
+      run: |
+        cd ios
+        xcodebuild -workspace Runner.xcworkspace \
+          -scheme Runner \
+          -configuration Release \
+          -sdk iphoneos \
+          -destination generic/platform=iOS \
+          CODE_SIGN_IDENTITY="" \
+          CODE_SIGNING_REQUIRED=NO \
+          CODE_SIGNING_ALLOWED=NO \
+          DEVELOPMENT_TEAM="" \
+          build
+        cd ..
     
     - name: Create IPA
       run: |
         mkdir -p Payload
-        cp -r build/ios/iphoneos/Runner.app Payload/
+        cp -r ios/build/Release-iphoneos/Runner.app Payload/
         zip -r BlackDiamondCar.ipa Payload
     
     - name: Upload IPA
